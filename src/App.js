@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Clima from "./components/Clima";
+import Error from "./components/Error";
 import Formulario from "./components/Formulario";
 import Header from "./components/Header";
 
@@ -11,6 +12,7 @@ function App() {
   });
   const [consultar, guardarConsultar] = useState(false);
   const [resultado, guardarResultado] = useState({});
+  const [error, guardarError] = useState(false);
 
   const { ciudad, pais } = busqueda;
 
@@ -23,10 +25,27 @@ function App() {
         const respuesta = await fetch(url);
         const resultado = await respuesta.json();
         guardarResultado(resultado);
+        guardarConsultar(false);
+
+        // Detecta si hubo resultados correctos en la consulta
+
+        if (resultado.cod === "404") {
+          guardarError(true);
+        } else {
+          guardarError(false);
+        }
       }
     };
     consultarAPI();
+    // eslint-disable-next-line
   }, [consultar]);
+
+  let componente;
+  if (error) {
+    componente = <Error mensaje="No hay resultados" />;
+  } else {
+    componente = <Clima resultado={resultado} />;
+  }
 
   return (
     <>
@@ -41,11 +60,7 @@ function App() {
                 guardarConsultar={guardarConsultar}
               />
             </div>
-            <div className="col m6 s12">
-              <Clima 
-                resultado={resultado}
-              />
-            </div>
+            <div className="col m6 s12">{componente}</div>
           </div>
         </div>
       </div>
