@@ -9,8 +9,10 @@ const Formulario = () => {
       </div>
 
       <div className="input-field col s12">
-        <select name="pais" id="pais">
-          <option value="">-- Seleccione un país --</option>
+        <select className="browser-default" name="pais" id="pais">
+          <option value="" defaultValue="Escoge un país">
+            --Selecciona un país--
+          </option>
           <option value="US">Estados Unidos</option>
           <option value="MX">México</option>
           <option value="AR">Argentina</option>
@@ -19,15 +21,15 @@ const Formulario = () => {
           <option value="ES">España</option>
           <option value="PE">Perú</option>
         </select>
-        <label htmlFor="pais">País</label>
       </div>
 
       <div className="input-field col s12">
-        <input
+        <button
           type="submit"
-          value="Buscar Clima"
-          className="waves-effect waves-light btn-large btn-block yellow accent-4"
-        />
+          className="waves-effect waves-light btn-large btn-block yellow accent-4 col s12"
+        >
+          Buscar Clima
+        </button>
       </div>
     </form>
   );
