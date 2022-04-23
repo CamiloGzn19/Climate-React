@@ -1,15 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Formulario = () => {
+const Formulario = ({ busqueda, guardarBusqueda, guardarConsultar }) => {
+  const [error, guardarError] = useState(false);
+
+  // Extraer ciudad y pais
+
+  const { ciudad, pais } = busqueda;
+
+  // Función que coloca los elementos en el state
+  const handleChange = (e) => {
+    // Actualizar el state
+    guardarBusqueda({
+      ...busqueda,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Cuando el usuario da submit al form
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Validar
+    if (ciudad.trim() === "" || pais.trim() === "") {
+      guardarError(true);
+      return;
+    }
+
+    guardarError(false);
+
+    guardarConsultar(true);
+
+    // Pasar al componente principal
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
+      {error ? (
+        <p className="red darken-4 error">Todos los campos son obligatorios</p>
+      ) : null}
       <div className="input-field col s12">
-        <input type="text" name="ciudad" id="ciudad" />
+        <input
+          type="text"
+          name="ciudad"
+          id="ciudad"
+          value={ciudad}
+          onChange={handleChange}
+        />
         <label htmlFor="ciudad">Ciudad</label>
       </div>
 
       <div className="input-field col s12">
-        <select className="browser-default" name="pais" id="pais">
+        <select
+          className="browser-default"
+          name="pais"
+          id="pais"
+          value={pais}
+          onChange={handleChange}
+        >
           <option value="" defaultValue="Escoge un país">
             --Selecciona un país--
           </option>
